@@ -1,0 +1,38 @@
+
+.card{
+        transition: ease ;
+        transition-duration: 1s;
+        box-shadow: 0 20px 40px gray;
+        margin-left: 10vw;
+        margin-top: 50px;
+        width: 30vw;
+    }
+    .card:hover{
+        box-shadow: 0 20px 40px rgb(55, 55, 55);
+    }
+
+.grid{
+      display: grid; 
+      grid-template-columns: auto auto;
+    }
+
+
+@media screen and (max-width: 480px){
+      .grid{
+        grid-template-columns: auto;
+        
+      }
+      .card{
+          width: 50vw;
+          margin-left: 25vw;
+        }
+    }
+
+#parent{
+    background-color: white; 
+    position: sticky; 
+    bottom: 0; 
+    width: 100%; 
+    padding: 10px;
+    
+}

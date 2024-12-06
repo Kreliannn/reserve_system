@@ -14,13 +14,7 @@ class Database{
         $stmt->execute($data);
     }
 
-    public function nsert($query, $data = [])
-    {
-        $pdo = $this->pdo();
-        $stmt = $pdo->prepare($query);
-        $stmt->execute($data);
-        return $this;
-    }
+   
 
 
     public function update($query, $data = [])

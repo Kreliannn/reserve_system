@@ -8,7 +8,15 @@ $today = $currentDate->format('Y-m-d');
 
 $database->update("update reserve_drinks  set status = 'cancelled' where date < ? && status = 'waiting'", [$today]);
 
-echo "";
+function dateConvert($date)
+{
+  return DateTime::createFromFormat('Y-m-d', $date)->format('m-d-Y');
+}
+
+function TimeConvert($time)
+{
+  return DateTime::createFromFormat('H:i', $time)->format('g:i A');
+}
 
 ?>
 
@@ -26,19 +34,33 @@ echo "";
 <body>
 <input type="hidden" id='customer_id' value="<?=$_SESSION['user']['customer_id']?>">
 <!-- NAVBAR -->
-<nav class="navbar navbar-expand-sm navbar-dark" style="background-color: darkblue;">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="index.php"><img src="Assets/img/Local/ncst.png" width="30px"></a>
-        <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="drinks.php" style="color: white;">Back-></a>
-            </li>
-            
-            <li class="nav-item">
-                <a class="nav-link" href="customer_transaction_drinks.php" style="color: white;"> drinks order </a>
-            </li>
-        </ul>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" href="index.php">
+      <img src="Assets/img/Local/ncst.png" alt="NCST Logo" width="30" height="30" class="d-inline-block align-top">
+      NCST
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="drinks.php">
+            <i class="bi bi-arrow-left"></i> Back
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="customer_transaction_drinks.php">Drinks Order</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="index.php">Logout</a>
+        </li>
+      </ul>
     </div>
+  </div>
 </nav>
 
 <div class="container mt-4">
@@ -52,6 +74,7 @@ echo "";
                     <div class="row">
                         <div class='col-10'>
                             <h5 class="card-title col-5">Customer: <?= $order['customer_name']?></h5>
+                            <h5 class="card-title col-5">Total: <?= $order['total']?></h5>
                         </div>
                         
                         <div class='col'>
@@ -65,8 +88,8 @@ echo "";
                     </div>
                     
                     <p class="card-text">Student Number: <?= $order['customer_student_id']?> </p>
-                    <p class="card-text">Pick-up Date: <?= $order['date']?></p>
-                    <p class="card-text">Pick-up Time: <?= $order['time']?></p>
+                    <p class="card-text">Pick-up Date: <?= dateConvert($order['date'])?></p>
+                    <p class="card-text">Pick-up Time: <?= timeConvert($order['time'])?></p>
                       <?php $order_item = $database->get("select * from reserve_drinks_items where reserve_id = ?", [$order['reserve_id']], "fetchAll") ?>                    
                       <table class='table table-stripped' >
                         <tr>

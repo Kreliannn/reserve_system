@@ -18,19 +18,33 @@ session_start();
 <body>
 <input type="hidden" id='customer_id' value="<?=$_SESSION['user']['customer_id']?>">
 <!-- NAVBAR -->
-<nav class="navbar navbar-expand-sm navbar-dark" style="background-color: darkblue;">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="index.php"><img src="Assets/img/Local/ncst.png" width="30px"></a>
-        <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="customer.php" style="color: white;">Back-></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="customer_transaction_food.php">View Recent food </a>
-            </li>
-            
-        </ul>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="">
+  <div class="container">
+    <a class="navbar-brand" href="index.php">
+      <img src="Assets/img/Local/ncst.png" alt="NCST Logo" width="30" height="30" class="d-inline-block align-top">
+      NCST
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="customer.php">
+            <i class="bi bi-arrow-left"></i> Back
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="customer_transaction_food.php">View Recent Food</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="index.php">Logout</a>
+        </li>
+      </ul>
     </div>
+  </div>
 </nav>
 
 
@@ -71,7 +85,7 @@ session_start();
                         object.forEach(function (food) {
                             $("#food").append(`
                             <div class='col-4 mt-3'>
-                                <div class='card p-3 text-center'>
+                                <div class='card p-3 text-center shadow'>
                                     <div class='card-body'>
                                         <img src="Assets/img/Web/Web_Food_Thumbnails/${food.Food_Thumbnail_Directory}" style='height:350px; width:100%'>
                                     </div>

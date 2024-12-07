@@ -26,23 +26,29 @@
 
 </head>
 <body>
-<nav class="navbar navbar-expand-sm navbar-dark" style="background-color: darkblue;">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#"><img src="Assets\img\Local\ncst.png" width="30px"></a>
-          <ul class="navbar-nav me-auto">
-        
-      
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" href="index.php">
+      <img src="Assets/img/Local/ncst.png" alt="NCST Logo" width="30" height="30" class="d-inline-block align-top">
+      NCST
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar" aria-controls="mynavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse row" id="mynavbar">
+      <div class="col-10"></div>
+      <ul class="navbar-nav col-2">
+        <li class="nav-item">
+          <a class="nav-link" href="index.php">Logout</a>
+        </li>
       </ul>
-          <form class="d-flex">
-          <a class="nav-link text-light" href="index.php">Logout</a>
-      </form>
-        </div>
-      </nav>
-      <br>
+    </div>
+  </div>
+</nav>
 
-
+        <br>
       <h1 class='text-center'> welcome <?=$_SESSION['user']['customer_name']?> </h1>
-
+      <hr>
 
 
       <a href="food.php" style="text-decoration: none;">

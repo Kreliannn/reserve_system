@@ -6,6 +6,17 @@ $today = $currentDate->format('Y-m-d');
 
 $today_order = $database->get("select * from reserve_drinks where date =? && status = 'waiting' ORDER BY reserve_id DESC", [$today], "fetchAll");
 
+function dateConvert($date)
+{
+  return DateTime::createFromFormat('Y-m-d', $date)->format('m-d-Y');
+}
+
+function TimeConvert($time)
+{
+  return DateTime::createFromFormat('H:i', $time)->format('g:i A');
+}
+ 
+
 ?>
 
 <!DOCTYPE html>
@@ -45,16 +56,16 @@ $today_order = $database->get("select * from reserve_drinks where date =? && sta
   </nav>
   
     <div class="container mt-4">
-        <h1 class="text-center mb-4">Today's drinks Orders</h1>
+        <h1 class="text-center mb-4"> <?= dateConvert($today)?> Orders</h1>
         
         <div id="orderList">
            <?php foreach($today_order as $order): ?>
             <div class="card mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">Customer: <?= $order['customer_name']?></h5>
+                    <h3 class="card-title fw-bold">Customer: <?= $order['customer_name']?></h3>
                     <p class="card-text">Student Number: <?= $order['customer_student_id']?> </p>
-                    <p class="card-text">Pick-up Date: <?= $order['date']?></p>
-                    <p class="card-text">Pick-up Time: <?= $order['time']?></p>
+                    <p class="card-text">Pick-up Date: <?= dateConvert($order['date'])?> </p>
+                    <p class="card-text">Pick-up Time: <?= TimeConvert($order['time'])?></p>
                       <?php $order_item = $database->get("select * from reserve_drinks_items where reserve_id = ?", [$order['reserve_id']], "fetchAll") ?>                    
                       <table class='table table-stripped' >
                         <tr>

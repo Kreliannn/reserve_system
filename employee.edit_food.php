@@ -19,29 +19,35 @@ $products = $database->get("select * from  food inner join food_thumbnail on foo
     
 </head>
 <body>
-
-<nav class="navbar navbar-expand-sm navbar-dark" style="background-color: darkblue;">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="index.php"><img src="Assets\img\Local\ncst.png" width="30px"></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="mynavbar">
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="database_food.php" style="color: white;">food Store </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="employee.reserve_order_food.php" style="color: white;"> reserve food </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="employee.edit_food.php" style="color: white;"> edit food </a>
-          </li>
-        </ul>
-      </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" href="index.php">
+      <img src="Assets/img/Local/ncst.png" alt="NCST Logo" width="30" height="30" class="d-inline-block align-top">
+      NCST
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar" aria-controls="mynavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mynavbar">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="database_food.php">Food Store</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="employee.reserve_order_food.php">Reserve Food</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="employee.edit_food.php">Edit Food</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="index.php">Logout</a>
+        </li>
+      </ul>
     </div>
-  </nav>
-  
+  </div>
+</nav>
 
 
 <form action='backend/add_product.food.php' method='post' enctype='multipart/form-data' class="row container-fluid  shadow mt-4 ms-2" style='height: 150px; background:whitesmoke' >

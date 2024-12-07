@@ -30,7 +30,10 @@
         </div>
     </nav>
     <br>
-    <div class="m-5 p-5">
+    <div class="row">
+        <div class="col"></div>
+        <div class="col">
+        <div class="m-5 p-5 card">
         <label for="username">Username: </label>
         <input type="text" id="username" name="username" class="form-control" placeholder="Enter username" required>
 
@@ -39,6 +42,10 @@
         <br>
         <button class="btn btn-primary" id="btn">Submit</button>
     </div>
+        </div>
+        <div class="col"></div>
+    </div>
+    
     <script>
         $("#btn").on("click",function(){
 
@@ -61,6 +68,10 @@
 
                         case "drinks":
                             window.location.href = "database_drinks.php";
+                        break;
+
+                        case "admin":
+                            window.location.href = "admin_users.php";
                         break;
                         
                         default:

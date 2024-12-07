@@ -12,7 +12,8 @@ session_start();
     <link href="Assets/css/bootstrap.min.css" rel="stylesheet">
     <script src="Assets/js/jquery-3.7.1.min.js"></script>
     <script src="Assets/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="food and drinks.css">
+    <script src="Assets/js/sweetalert2.all.min.js"></script>
+
 </head>
 <body>
 <input type="hidden" id='customer_id' value="<?=$_SESSION['user']['customer_id']?>">
@@ -24,6 +25,10 @@ session_start();
             <li class="nav-item">
                 <a class="nav-link" href="customer.php" style="color: white;">Back-></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="customer_transaction_food.php">View Recent food </a>
+            </li>
+            
         </ul>
     </div>
 </nav>
@@ -32,23 +37,43 @@ session_start();
 <h1 class="text-center mt-4">FOOD</h1>
 
 <!-- Menu Section -->
-<div class="grid" id="food"></div>
+<div class="grid row container-fluid " id="food">
+
+</div>
 
 <script>
     $(document).ready(function () {
         // Function to load food items from the database
         function server() {
+
+           
+
             $.ajax({
                 type: "POST",
-                url: "fetch_food.php",
+                url: "backend/fetch_food.php",
                 success: function (response) {
+                    console.log(response)
+
+                    function enableButton(qnty, food_id, food_name, food_price)
+                    {
+                        if(qnty < 1)
+                        {
+                            return "<button class='btn btn-danger text-light add-to-cart mt-2' data-id='${food.Food_ID}' data-name='${food.Food_Name}' data-price='${food.Food_Price}' disabled > out of stock </button>";
+                        }
+                        else
+                        {
+                            return `<button class='btn btn-warning text-light add-to-cart mt-2' data-id='${food_id}' data-name='${food_name}' data-price='${food_price}'  >Add to Cart</button>`;
+                        }
+                    }
+
                     if (response.length > 0) {
                         let object = JSON.parse(response);
                         object.forEach(function (food) {
                             $("#food").append(`
+                            <div class='col-4 mt-3'>
                                 <div class='card p-3 text-center'>
                                     <div class='card-body'>
-                                        <img src="${food.Food_Thumbnail}" width='150px'>
+                                        <img src="Assets/img/Web/Web_Food_Thumbnails/${food.Food_Thumbnail_Directory}" style='height:350px; width:100%'>
                                     </div>
                                     <div class="card-footer">
                                         <b>${food.Food_Name}</b><br>
@@ -63,8 +88,9 @@ session_start();
                                             <option value="4">4</option>
                                             <option value="5">5</option>
                                         </select>
-                                        <button class='btn btn-warning text-light add-to-cart mt-2' data-id="${food.Food_ID}" data-name="${food.Food_Name}" data-price="${food.Food_Price}">Add to Cart</button>
+                                        ${enableButton(food.Food_Quantity, food.Food_ID, food.Food_Name, food.Food_Price  )}
                                     </div>
+                                </div>
                                 </div>
                             `);
                         });
@@ -92,6 +118,8 @@ session_start();
             let name = $(this).data("name");
             let price = parseFloat($(this).data("price"));
             let quantity = parseInt($(`#quantity-${id}`).val());  // Get the selected quantity
+
+            Swal.fire(name + " added");
 
             // Check if the item is already in the cart
             let itemIndex = cart.findIndex(item => item.id === id);
@@ -144,29 +172,40 @@ session_start();
         
         $("#paymentbot").click((e)=>{
             
-            
+            if(cart.length == 0) cart = "";
+
             e.preventDefault();
             $.ajax({
-                url : "database_reserve_food.php",
+                url : "backend/database_reserve_food.php",
                 method : "post",
                 data : {
                     customer_id : $("#customer_id").val(),
                     date : $("#date").val(),
                     time : $("#time").val(),
                     order : cart,
-                    total : totalPrice
+                    total : totalPrice,
+                    store : "food"
                 },
-                success : (response) => {
+               success : (response) => {
                     console.log(response)
-                    switch(response)
+                    let res = JSON.parse(response)
+                    switch(res.type)
                     {
                         case "success":
-                            alert("success");
-                            window.location.href = "customer_transaction.php";
+                            Swal.fire({
+                                title: res.text,
+                                icon: "success"
+                            });
+                            setTimeout(() => {
+                                window.location.href = "customer_transaction_food.php";
+                            }, 1000);
                         break;
 
                         case "error":
-                            alert(response)
+                            Swal.fire({
+                                title: res.text,
+                                icon: "error"
+                            });
                         break;
                     }
                 }

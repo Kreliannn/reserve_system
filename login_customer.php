@@ -7,6 +7,7 @@
     <link href="Assets\css\bootstrap.min.css" rel="stylesheet">
     <script src="Assets\js\bootstrap.bundle.min.js"></script>
     <script src="Assets\js\jquery-3.7.1.min.js"></script>
+    <script src="Assets/js/sweetalert2.all.min.js"></script>
 <style>
   #formdesign{
         box-shadow: 0 20px 40px black;
@@ -56,7 +57,7 @@
   <script>
     $("#submit").click((e)=> {
       $.ajax({
-        url : "database_login_customer.php",
+        url : "backend/database_login_customer.php",
         method : "post",
         data : {
           username : $("#studentnum").val(),
@@ -70,7 +71,11 @@
             break;
 
             case "error":
-              alert("wrong username or password")
+              Swal.fire({
+                title: "user not found",
+                text: "incorrect username or password",
+                icon: "error"
+              });
             break;
           }
         }

@@ -1,7 +1,14 @@
 <?php
-include "database_configure.second.php"; 
+include "backend/database_configure.second.php"; 
 
-$all_orders = $database->get("select * from reserve_food where customer_student_id = ? ORDER BY reserve_id DESC", [$_SESSION['user']['username']], "fetchAll");
+$all_orders = $database->get("select * from reserve_drinks where customer_student_id = ? ORDER BY reserve_id DESC", [$_SESSION['user']['username']], "fetchAll");
+
+$currentDate = new DateTime();
+$today = $currentDate->format('Y-m-d');
+
+$database->update("update reserve_drinks  set status = 'cancelled' where date < ? && status = 'waiting'", [$today]);
+
+echo "";
 
 ?>
 
@@ -24,7 +31,11 @@ $all_orders = $database->get("select * from reserve_food where customer_student_
         <a class="navbar-brand" href="index.php"><img src="Assets/img/Local/ncst.png" width="30px"></a>
         <ul class="navbar-nav me-auto">
             <li class="nav-item">
-                <a class="nav-link" href="customer.php" style="color: white;">Back-></a>
+                <a class="nav-link" href="drinks.php" style="color: white;">Back-></a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="customer_transaction_drinks.php" style="color: white;"> drinks order </a>
             </li>
         </ul>
     </div>
@@ -44,8 +55,9 @@ $all_orders = $database->get("select * from reserve_food where customer_student_
                         </div>
                         
                         <div class='col'>
-                            <form classs='col-5'action="cancel.order.php" method='post'> 
+                            <form classs='col-5'action="backend/cancel.order.php" method='post'> 
                                 <input type="hidden"  name='reserve_id' value='<?=$order['reserve_id']?>'>
+                                <input type="hidden"  name='store' value='reserve_drinks'>
                                 <input type="submit" value='cancel order' class='btn btn-danger ms-3'>
                             </form>
                         </div>
@@ -55,7 +67,7 @@ $all_orders = $database->get("select * from reserve_food where customer_student_
                     <p class="card-text">Student Number: <?= $order['customer_student_id']?> </p>
                     <p class="card-text">Pick-up Date: <?= $order['date']?></p>
                     <p class="card-text">Pick-up Time: <?= $order['time']?></p>
-                      <?php $order_item = $database->get("select * from reserve_food_items where reserve_id = ?", [$order['reserve_id']], "fetchAll") ?>                    
+                      <?php $order_item = $database->get("select * from reserve_drinks_items where reserve_id = ?", [$order['reserve_id']], "fetchAll") ?>                    
                       <table class='table table-stripped' >
                         <tr>
                           <th> name </th>
@@ -71,6 +83,7 @@ $all_orders = $database->get("select * from reserve_food where customer_student_
                         <?php endforeach?>
                       </table>
                       <?php 
+
                         $statusClass = match($order['status']) {
                             "waiting" => "alert-primary",
                             "completed" => "alert-success",
@@ -85,7 +98,6 @@ $all_orders = $database->get("select * from reserve_food where customer_student_
   
         </div>
     </div>
-
 
 
 </body>

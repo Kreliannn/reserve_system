@@ -1,85 +1,110 @@
+<?php
+session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Store 2</title>
-    <link href="Assets\css\bootstrap.min.css" rel="stylesheet">
-    <script src="Assets\js\bootstrap.bundle.min.js"></script>
-    <script src="Assets\js\jquery-3.7.1.min.js"></script>
-    <link rel="stylesheet" href="food and drinks.css">
-
+    <title>Store 1</title>
+    <link href="Assets/css/bootstrap.min.css" rel="stylesheet">
+    <script src="Assets/js/jquery-3.7.1.min.js"></script>
+    <script src="Assets/js/bootstrap.bundle.min.js"></script>
+    <script src="Assets/js/sweetalert2.all.min.js"></script>
 </head>
 <body>
-
-<!-- NAVBAR SA TAAS-->
+<input type="hidden" id='customer_id' value="<?=$_SESSION['user']['customer_id']?>">
+<!-- NAVBAR -->
 <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: darkblue;">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="index.php"><img src="Assets\img\Local\ncst.png" width="30px"></a>
-          <ul class="navbar-nav me-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="customer.php" style="color: white;">Back-></a>
-          </li>
+    <div class="container-fluid">
+        <a class="navbar-brand" href="index.php"><img src="Assets/img/Local/ncst.png" width="30px"></a>
+        <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="customer.php" style="color: white;">Back-></a>
+            </li>
+            <li class="nav-item">
+                 <a class="nav-link" href="customer_transaction_drinks.php">View Recent drinks </a>
+            </li>
+
         </ul>
-        </div>
-      </nav>
+    </div>
+</nav>
 
-  <h1 class="text-center mt-4"> DRINKS </h1>
 
-  <!-- MENU SA DRINKS-->
-  <div class="grid" id="drinks"></div>
-  <!-- DISPLAY DRINKS -->
-  <script>
-    function server(){
-      $.ajax({
-        type: "POST",
-        url: "fetch_drinks.php",
-        success: function (response) {
-          if(response.length > 0){
-            let object = JSON.parse(response)
-            console.log(object)
-            // Loop throught JSON data to append rows to the table
-            object.forEach(function(Drink){
-              $("#drinks").append(`
-                <div class='card p-3 text-center'>
+<h1 class="text-center mt-4">DRINKS</h1>
+
+<!-- Menu Section -->
+<div class="grid row container-fluid " id="food"></div>
+
+<script>
+    $(document).ready(function () {
+        // Function to load food items from the database
+        function server() {
+            $.ajax({
+                type: "POST",
+                url: "backend/fetch_drinks.php",
+                success: function (response) {
+                  console.log(response)
+
+                  function enableButton(qnty, food_id, food_name, food_price)
+                    {
+                        if(qnty < 1)
+                        {
+                            return "<button class='btn btn-danger text-light add-to-cart mt-2' data-id='${food.Food_ID}' data-name='${food.Food_Name}' data-price='${food.Food_Price}' disabled > out of stock </button>";
+                        }
+                        else
+                        {
+                            return `<button class='btn btn-warning text-light add-to-cart mt-2' data-id='${food_id}' data-name='${food_name}' data-price='${food_price}'  >Add to Cart</button>`;
+                        }
+                    }
+
+
+                    if (response.length > 0) {
+                        let object = JSON.parse(response);
+                        object.forEach(function (food) {
+                            $("#food").append(`
+                            <div class='col-4 mt-3' >
+                                <div class='card p-3 text-center'>
                                     <div class='card-body'>
-                                        <img src="${Drink.Drink_Thumbnail}" width='150px'>
+                                        <img src="Assets/img/Web/Web_Food_Thumbnails/${food.Food_Thumbnail_Directory}" style='height:350px; width:100%''>
                                     </div>
                                     <div class="card-footer">
-                                        <b>${Drink.Drink_Name}</b><br>
-                                        Price: P ${Drink.Drink_Price}
+                                        <b>${food.Food_Name}</b><br>
+                                        Price: P ${food.Food_Price}
                                         <br>
                                         <!-- Quantity Selector -->
-                                        <label for="quantity-${Drink.Drink_ID}">Quantity:</label>
-                                        <select class="form-select" id="quantity-${Drink.Drink_ID}" data-id="${Drink.Drink_ID}" data-name="${Drink.Drink_Name}" data-price="${Drink.Drink_Price}">
+                                        <label for="quantity-${food.Food_ID}">Quantity:</label>
+                                        <select class="form-select" id="quantity-${food.Food_ID}" data-id="${food.Food_ID}" data-name="${food.Food_Name}" data-price="${food.Food_Price}">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
                                             <option value="4">4</option>
                                             <option value="5">5</option>
                                         </select>
-                                        <button class='btn btn-warning text-light add-to-cart mt-2' data-id="${Drink.Drink_ID}" data-name="${Drink.Drink_Name}" data-price="${Drink.Drink_Price}">Add to Cart</button>
+                                        ${enableButton(food.Food_Quantity, food.Food_ID, food.Food_Name, food.Food_Price  )}
                                     </div>
                                 </div>
-              `)
-            })
-          } else {
-            $("#drinks").append(`
-              <div class='alert alert-danger'>
-                No data available
-              </div>
-            `)
-          }
+                                </div>
+                            `);
+                        });
+                    } else {
+                        $("#food").append(`
+                            <div class='alert alert-danger'>
+                                No data available
+                            </div>
+                        `);
+                    }
+                }
+            });
         }
-      })
-    }
-    $(document).ready(()=>{
 
+        // Call the server function to load food items
+        server();
 
-      server();
-
-      // Cart data initialization
-      let cart = [];
+        // Cart data initialization
+        let cart = [];
         let totalPrice = 0;
 
         // Add item to cart
@@ -88,6 +113,8 @@
             let name = $(this).data("name");
             let price = parseFloat($(this).data("price"));
             let quantity = parseInt($(`#quantity-${id}`).val());  // Get the selected quantity
+
+            Swal.fire(name + " added");
 
             // Check if the item is already in the cart
             let itemIndex = cart.findIndex(item => item.id === id);
@@ -137,13 +164,59 @@
             // Update total price and cart display
             $("#total").html(`<h5>Total: P ${totalPrice.toFixed(2)}</h5>`);
         }
+        
+        $("#paymentbot").click((e)=>{
+            
+            if(cart.length == 0) cart = "";
+            
+            e.preventDefault();
+            $.ajax({
+                url : "backend/database_reserve_food.php",
+                method : "post",
+                data : {
+                    customer_id : $("#customer_id").val(),
+                    date : $("#date").val(),
+                    time : $("#time").val(),
+                    order : cart,
+                    total : totalPrice,
+                    store : "drink"
+                },
+                success : (response) => {
+                    console.log(response)
+                    let res = JSON.parse(response)
+                    switch(res.type)
+                    {
+                        case "success":
+                            Swal.fire({
+                                title: res.text,
+                                icon: "success"
+                            });
+                            setTimeout(() => {
+                                window.location.href = "customer_transaction_drinks.php";
+                            }, 1000);
+                            
+                        break;
 
-       
-    })
-  </script>
+                        case "error":
+                            Swal.fire({
+                                title: res.text,
+                                icon: "error"
+                            });
+                        break;
+                    }
+                }
+            })
+        })
+    });
+</script>
+
+
+
 <br><br>
-  <!-- NAVBAR SA IBABA -->
-  <div id="parent" class="container-fluid px-4">
+<!-- Cart Section -->
+
+
+<div id="parent" class="container-fluid px-4">
     <div class="list"><h6>Order List: </h6></div>
     <hr id="hrline">
     <ul>
@@ -163,6 +236,8 @@
        
     </ul>
 </div>
+
+
 
 </body>
 </html>

@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Store 2</title>
+    
     <link href="Assets\css\bootstrap.min.css" rel="stylesheet">
     <script src="Assets\js\bootstrap.bundle.min.js"></script>
     <script src="Assets\js\jquery-3.7.1.min.js"></script>
+    <title>Store 1</title>
 
 </head>
 <body>
@@ -21,13 +22,13 @@
       <div class="collapse navbar-collapse" id="mynavbar">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link" href="database_food.php" style="color: white;">Store 1</a>
+            <a class="nav-link" href="database_drinks.php" style="color: white;">drink Store </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="database_drinks.php" style="color: white;">Store 2</a>
+            <a class="nav-link" href="employee.reserve_order_drinks.php" style="color: white;"> reserve drinks </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="employee.reserve_order.php" style="color: white;"> reserve food </a>
+            <a class="nav-link" href="employee.edit_drinks.php" style="color: white;"> edit drinks </a>
           </li>
         </ul>
       </div>
@@ -39,45 +40,52 @@
   <table class="table table-bordered table-hover table-striped">
     <thead>
       <tr>
-        <th>Drinks</th>
+        <th> drinks </th>
+        <th>name</th>
         <th>Price</th>
         <th>Stocks</th>
       </tr>
     </thead>
-    <tbody id=drinks></tbody>
+    <tbody id="food"></tbody>
   </table>
   <script>
     function server(){
       $.ajax({
         type: "POST",
-        url: "fetch_drinks.php",
+        url: "backend/fetch_drinks.php",
         success: function (response) {
           if(response.length > 0){
             let object = JSON.parse(response)
             // Loop throught JSON data to append rows to the table
             object.forEach(function(object){
-              $("#drinks").append(`
+              $("#food").append(`
                 <tr>
-                  <td>${object.Drink_Name}</td>
-                  <td>${object.Drink_Price}</td>
-                  <td>${object.Drink_Quantity}</td>
+                  <td> <img src="Assets/img/Web/Web_Food_Thumbnails/${object.Food_Thumbnail_Directory}" style='height:40px; width:40px'> </td>
+                  <td> <form action='backend/updateDrinksName.php' method="post"> <input type='text'  value='${object.Food_Name}' name='product_name'>   <input type='hidden' name='product_id'   value='${object.Food_ID}'> <input type='submit' class='btn btn-primary'> </form></td>
+                  <td> <form action='backend/updateDrinksPrice.php' method="post"> <input type='number'  value='${object.Food_Price}' name='product_price'>   <input type='hidden' name='product_id'   value='${object.Food_ID}'> <input type='submit' class='btn btn-primary'> </form></td>
+                  <td> <form action='backend/updateDrinksStock.php' method="post"> <input type='number'  value='${object.Food_Quantity}' name='product_stock'>   <input type='hidden' name='product_id'   value='${object.Food_ID}'> <input type='submit' class='btn btn-primary'> </form></td>
                 </tr>
               `)
             })
           } else {
-            $("#drinks").append(`
+            $("#food").append(`
               <div class='alert alert-danger'>
                 No data available
               </div>
             `)
           }
+
+        
+    
+      
         }
       })
     }
-    $(document).ready(server())
+    $(document).ready(()=>{
+      server()
+
+
+    })
   </script>
 </body>
 </html>
-<?php
-
-?>

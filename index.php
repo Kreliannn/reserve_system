@@ -7,7 +7,7 @@
     <link href="Assets\css\bootstrap.min.css" rel="stylesheet">
     <script src="Assets\js\bootstrap.bundle.min.js"></script>
     <script src="Assets\js\jquery-3.7.1.min.js"></script>
-    <?php include "database_configure.php";?>
+    
 <style>
   body{
         background-image: url("Assets/img/Local/bg.png");

@@ -7,6 +7,7 @@
     <link href="Assets\css\bootstrap.min.css" rel="stylesheet">
     <script src="Assets\js\bootstrap.bundle.min.js"></script>
     <script src="Assets\js\jquery-3.7.1.min.js"></script>
+    <script src="Assets/js/sweetalert2.all.min.js"></script>
 <style>
   #formdesign{
         box-shadow: 0 20px 40px black;
@@ -60,7 +61,7 @@
   $(document).ready(()=>{
     $("#submit").click(()=>{
       $.ajax({
-        url : "database_register_customer.php",
+        url : "backend/database_register_customer.php",
         method : "post",
         data : {
           username : $("#studentnum").val(),
@@ -68,7 +69,31 @@
           password : $("#pass").val()
         },
         success : (response) => {
-          alert(response)
+          
+          switch(response)
+          {
+            case "success":
+              Swal.fire({
+                title: "account created",
+                text: "please proceed to login form",
+                icon: "successs"
+              });
+            break;
+
+            case "accountExist":
+              Swal.fire({
+                title: "student id is taken",
+                icon: "error"
+              });
+            break;
+
+            case "empty":
+              Swal.fire({
+                title: "Empty field",
+                icon: "error"
+              });
+            break;
+          }
         }
       })
     })

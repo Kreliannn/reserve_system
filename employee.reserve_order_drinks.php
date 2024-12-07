@@ -1,10 +1,10 @@
 <?php
-include "database_configure.second.php"; 
+include "backend/database_configure.second.php"; 
 
 $currentDate = new DateTime();
 $today = $currentDate->format('Y-m-d');
 
-$today_order = $database->get("select * from reserve_food where date =? && status = 'waiting' ORDER BY reserve_id DESC", [$today], "fetchAll");
+$today_order = $database->get("select * from reserve_drinks where date =? && status = 'waiting' ORDER BY reserve_id DESC", [$today], "fetchAll");
 
 ?>
 
@@ -31,21 +31,21 @@ $today_order = $database->get("select * from reserve_food where date =? && statu
       <div class="collapse navbar-collapse" id="mynavbar">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link" href="database_food.php" style="color: white;">Store 1</a>
+            <a class="nav-link" href="database_drinks.php" style="color: white;">drink Store </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="database_drinks.php" style="color: white;">Store 2</a>
+            <a class="nav-link" href="employee.reserve_order_drinks.php" style="color: white;"> reserve drinks </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="employee.reserve_order.php" style="color: white;"> reserve food </a>
+            <a class="nav-link" href="employee.edit_drinks.php" style="color: white;"> edit drinks </a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
-
+  
     <div class="container mt-4">
-        <h1 class="text-center mb-4">Today's Orders</h1>
+        <h1 class="text-center mb-4">Today's drinks Orders</h1>
         
         <div id="orderList">
            <?php foreach($today_order as $order): ?>
@@ -55,7 +55,7 @@ $today_order = $database->get("select * from reserve_food where date =? && statu
                     <p class="card-text">Student Number: <?= $order['customer_student_id']?> </p>
                     <p class="card-text">Pick-up Date: <?= $order['date']?></p>
                     <p class="card-text">Pick-up Time: <?= $order['time']?></p>
-                      <?php $order_item = $database->get("select * from reserve_food_items where reserve_id = ?", [$order['reserve_id']], "fetchAll") ?>                    
+                      <?php $order_item = $database->get("select * from reserve_drinks_items where reserve_id = ?", [$order['reserve_id']], "fetchAll") ?>                    
                       <table class='table table-stripped' >
                         <tr>
                           <th> name </th>
@@ -72,12 +72,14 @@ $today_order = $database->get("select * from reserve_food where date =? && statu
                       </table>
                       <h2> total : <?=$order['total']?></h2> <br>
                       <div class="row">
-                      <form action="complete.order.php" method='post' class='col-1'>
+                      <form action="backend/complete.order.php" method='post' class='col-1'>
+                        <input type='hidden' name='store' value='reserve_drinks'>
                         <input type='hidden' name='reserve_id' value='<?=$order['reserve_id']?>'>
                         <input type="submit" class='btn btn-success' value='complete'>
                       </form>
 
-                      <form action="cancel.order.php" method='post' class='col ms-2'>
+                      <form action="backend/cancel.order.php" method='post' class='col ms-2'>
+                        <input type='hidden' name='store' value='reserve_drinks'>
                         <input type='hidden' name='reserve_id' value='<?=$order['reserve_id']?>'>
                         <input type="submit" class='btn btn-danger' value='cancel'>
                       </form>

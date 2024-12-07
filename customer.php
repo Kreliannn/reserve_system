@@ -30,9 +30,9 @@
         <div class="container-fluid">
           <a class="navbar-brand" href="#"><img src="Assets\img\Local\ncst.png" width="30px"></a>
           <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="customer_transaction.php">View Recent Transaction</a>
-        </li></ul>
+        
+      
+      </ul>
           <form class="d-flex">
           <a class="nav-link text-light" href="index.php">Logout</a>
       </form>

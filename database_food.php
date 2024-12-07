@@ -22,13 +22,13 @@
       <div class="collapse navbar-collapse" id="mynavbar">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link" href="database_food.php" style="color: white;">Store 1</a>
+            <a class="nav-link" href="database_food.php" style="color: white;">food Store </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="database_drinks.php" style="color: white;">Store 2</a>
+            <a class="nav-link" href="employee.reserve_order_food.php" style="color: white;"> reserve food </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="employee.reserve_order.php" style="color: white;"> reserve food </a>
+            <a class="nav-link" href="employee.edit_food.php" style="color: white;"> edit food </a>
           </li>
         </ul>
       </div>
@@ -40,7 +40,9 @@
   <table class="table table-bordered table-hover table-striped">
     <thead>
       <tr>
+        
         <th>Food</th>
+        <th> Name </th>
         <th>Price</th>
         <th>Stocks</th>
       </tr>
@@ -51,7 +53,7 @@
     function server(){
       $.ajax({
         type: "POST",
-        url: "fetch_food.php",
+        url: "backend/fetch_food.php",
         success: function (response) {
           if(response.length > 0){
             let object = JSON.parse(response)
@@ -59,9 +61,10 @@
             object.forEach(function(object){
               $("#food").append(`
                 <tr>
-                  <td>${object.Food_Name}</td>
-                  <td>${object.Food_Price}</td>
-                  <td> <form action='updateFoodStock.php' method="post"> <input type='number'  value='${object.Food_Quantity}' name='product_stock'>   <input type='hidden' name='product_id'   value='${object.Food_ID}'> <input type='submit' class='btn btn-primary'> </form></td>
+                  <td> <img src="Assets/img/Web/Web_Food_Thumbnails/${object.Food_Thumbnail_Directory}" style='height:40px; width:40px'> </td>
+                  <td> <form action='backend/updateFoodName.php' method="post"> <input type='text'  value='${object.Food_Name}' name='product_name'>   <input type='hidden' name='product_id'   value='${object.Food_ID}'> <input type='submit' class='btn btn-primary'> </form></td>
+                  <td> <form action='backend/updateFoodPrice.php' method="post"> <input type='number'  value='${object.Food_Price}' name='product_price'>   <input type='hidden' name='product_id'   value='${object.Food_ID}'> <input type='submit' class='btn btn-primary'> </form></td>
+                  <td> <form action='backend/updateFoodStock.php' method="post"> <input type='number'  value='${object.Food_Quantity}' name='product_stock'>   <input type='hidden' name='product_id'   value='${object.Food_ID}'> <input type='submit' class='btn btn-primary'> </form></td>
                 </tr>
               `)
             })
@@ -73,24 +76,8 @@
             `)
           }
 
-        /*
-        $(".save").click((event)=>{
-          let product_info = JSON.parse(event.target.value);
-          console.log(product_info)
-          $.ajax({
-            url : "updateFoodStock.php",
-            method : "post",
-            data : {
-              product_id : product_info[0],
-              product_stock : product_info[1]
-            },
-            success : (response) => {
-
-              alert(response)
-              window.location.reload()
-            }
-          })
-        })*/
+        
+    
       
         }
       })

@@ -6,7 +6,7 @@ create table customer(
 )
 
 
-create table reserve_food(
+create table reserve_drinks(
     reserve_id int primary key auto_increment,
     customer_name varchar(255),
     customer_student_id varchar(255),
@@ -14,10 +14,10 @@ create table reserve_food(
     time varchar(255),
     total int,
     status varchar(255)
-)
+);
 
 
-create reserve_food_items(
+create table reserve_drinks_items(
     id int primary key auto_increment,
     reserve_id int,
     price int,

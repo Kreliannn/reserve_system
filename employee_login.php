@@ -7,7 +7,7 @@
     <link href="Assets\css\bootstrap.min.css" rel="stylesheet">
     <script src="Assets\js\bootstrap.bundle.min.js"></script>
     <script src="Assets\js\jquery-3.7.1.min.js"></script>
-
+    <script src="Assets/js/sweetalert2.all.min.js"></script>
 <style>
     .card{
         transition: ease ;
@@ -47,15 +47,29 @@
 
             $.ajax({
                 type: "POST",
-                url: "fetch_login.php",
+                url: "backend/fetch_login.php",
                 data: {
                     username: username,
                     password: password,
                 },
-                dataType: "json",
                 success: function (response) {
-                    if(response.status === "valid"){
-                        window.location.assign("database_food.php")
+                    switch(response)
+                    {
+                        case "food":
+                            window.location.href = "database_food.php";
+                        break;
+
+                        case "drinks":
+                            window.location.href = "database_drinks.php";
+                        break;
+                        
+                        default:
+                        Swal.fire({
+                            title: "error",
+                            icon: "error"
+                        });
+                        break;
+                        
                     }
                 }
             });

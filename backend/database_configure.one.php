@@ -37,10 +37,10 @@
     )";
     
     $table_drinks = "CREATE TABLE Drinks (
-    Drink_ID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    Drink_Name varchar(255) NOT NULL UNIQUE,
-    Drink_Price decimal(15,2) NOT NULL,
-    Drink_Quantity int NOT NULL
+    Food_ID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    Food_Name varchar(255) NOT NULL UNIQUE,
+    Food_Price decimal(15,2) NOT NULL,
+    Food_Quantity int NOT NULL
     )";
     
     $table_food_thumbnail = "CREATE TABLE Food_Thumbnail (
@@ -48,15 +48,13 @@
     Food_Thumbnail_Name varchar(255) NOT NULL UNIQUE,
     Food_Thumbnail_Directory varchar(255) NOT NULL,
     Food_ID int,
-    FOREIGN KEY (Food_ID) REFERENCES Food(Food_ID)
     )";
 
     $table_drinks_thumbnail = "CREATE TABLE Drinks_Thumbnail (
-    Drink_Thumbnail_ID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    Drink_Thumbnail_Name varchar(255) NOT NULL UNIQUE,
-    Drink_Thumbnail_Directory varchar(255) NOT NULL,
-    Drink_ID int,
-    FOREIGN KEY (Drink_ID) REFERENCES Drinks(Drink_ID)
+    Food_Thumbnail_ID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    Food_Thumbnail_Name varchar(255) NOT NULL UNIQUE,
+    Food_Thumbnail_Directory varchar(255) NOT NULL,
+    Food_ID int,
     )";
 
     try{
